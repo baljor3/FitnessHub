@@ -1,0 +1,32 @@
+.no-margin {
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  .custom-form {
+    height: 453px;
+    width: 525px;
+  }
+
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Set the height of the container to the full viewport height */
+  }
+
+.password-icon {
+    position: relative;
+    right: 30px;
+    top:15px;
+    cursor: pointer;
+    outline: none;
+}
+
+.loginButton{
+    width:"200px"; 
+    background-color:"#FFE2AD"; 
+    color:"black"; 
+    border:"none";
+    
+}
