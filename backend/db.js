@@ -1,12 +1,12 @@
-psql = require('psql')
-
+const psql = require('psql')
+require("dotenv").config()
 
 const db = new Client({
-    user: 'root',
-    host: 'localhost',
-    database: 'fitnesshub',
-    password: 'Ch159159',
-    port: '5050',
+    user: process.env.USER,
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    password: process.env.PASS,
+    port: process.env.PORT,
 })
 
 
