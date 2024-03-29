@@ -1,7 +1,9 @@
-const psql = require('psql')
+const psql = require('pg')
+
+const{Pool} = psql
 require("dotenv").config()
 
-const db = new Client({
+const db = new Pool({
     user: process.env.USER,
     host: process.env.HOST,
     database: process.env.DATABASE,
