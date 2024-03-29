@@ -9,7 +9,8 @@ app.get('/createLogin',(req,res)=>{
     CREATE TABLE Login(
         id int AUTO_INCREMENT,
         Username VARCHAR(255),
-        Password VARCHAR(255),
+        salt VARCHAR(255),
+        PasswordHash VARCHAR(255),
         Email VARCHAR(255),
         PRIMARY KEY(id)
     )
@@ -21,3 +22,16 @@ app.get('/createLogin',(req,res)=>{
         res.send("created login table")
     })
 })
+
+const apis = require("./Router");
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use("/api", apis);
+
+
+
+
+const PORT = process.env.PORT || 8080;
