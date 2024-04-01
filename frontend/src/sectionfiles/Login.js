@@ -1,6 +1,7 @@
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import './Login.css'
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Login = () =>{
@@ -37,7 +38,7 @@ return(<div>
         <Button style={{width:"200px"}}>Login</Button>
         </div>
         <div className='d-flex justify-content-center align-items-center' style={{marginTop:"5px"}}>
-        <Button style= {{width:"120px"}}>Register</Button>
+        <Link to= '/register'><Button style= {{width:"120px"}} >Register</Button></Link>
         </div>
     </Form>
     </Container>
