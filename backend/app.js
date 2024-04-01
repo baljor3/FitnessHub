@@ -6,8 +6,8 @@ require("dotenv").config()
 
 app.get('/createLogin',(req,res)=>{
     let sql = `
-    CREATE TABLE Login(
-        id int AUTO_INCREMENT,
+    CREATE TABLE login (
+        id SERIAL,
         Username VARCHAR(255),
         salt VARCHAR(255),
         PasswordHash VARCHAR(255),
@@ -23,6 +23,11 @@ app.get('/createLogin',(req,res)=>{
     })
 })
 
+
+app.use(
+    cors({
+    origin:'*'
+  }));
 const apis = require("./Router");
 
 
@@ -34,5 +39,7 @@ app.use("/api", apis);
 
 
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, `app started on ${PORT}`)
+const PORT = 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
