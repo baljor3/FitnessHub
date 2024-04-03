@@ -10,6 +10,8 @@ const Login = () =>{
   const [username, setUserName] = useState('')
   const [usernameErrorState, setUserNameErrorState] = useState(false)
   const [usernameError, setuserNameError]= useState('username can not have')
+  const [passErrorState, setPassErrorState] = useState(false)
+  const [passError, setPassError]= useState('password can not have')
   const [email,setEmail] = useState('')
 
   const changePassword =() =>{
@@ -18,6 +20,9 @@ const Login = () =>{
 
   
   function hasWhiteSpace(str) {
+    if(str.length <=0){
+        return
+    }
         for (let i = 0; i < str.length; i++) {
           if (str[i] === ' ' || str[i] === '\t' || str[i] === '\n' || str[i] === '\r') {
             return true; // Found a white space character
@@ -26,39 +31,146 @@ const Login = () =>{
     return false; // No white space character found
 }
 
-    const checkUserName = (username) =>{
-       
-
-        if(!hasWhiteSpace(username)){
-            
-            setuserNameError(prevErrorMessage => prevErrorMessage + " spaces");
+    const checkUserNameWhiteSpaces = (username) =>{
+        console.log(username)
+        console.log(usernameErrorState)
+        if(hasWhiteSpace(username)){
             setUserNameErrorState(true)
+            if(!usernameError.includes('spaces')){
+                return
+            }
+            setuserNameError(prevErrorMessage => prevErrorMessage + " spaces,");
+        }else{
+            if(usernameError.includes('spaces')){
+                let newword = usernameError
+                newword.replace(" spaces[, .]","")
+                setuserNameError(newword)
+            }
+            setUserNameErrorState(false)
+        }
+        console.log(usernameErrorState)
+    }
+
+    const checkUserNameLength = (username) =>{
+        console.log(usernameErrorState)
+        if(username.length <=4 ){
+            setUserNameErrorState(true)
+            if(!username.includes('username must be longer than 3 characters')){
+                return
+            }
+            setuserNameError(prevErrorMessage => prevErrorMessage + " and username must be longer than 3 characters.");
+        }else{
+            if(usernameError.includes('username must be longer than 3 characters')){
+                let newword = usernameError
+                newword.replace(" ?:[and]? username must be longer than 3 characters","")
+                setuserNameError(newword)
+            }
+            setUserNameErrorState(false)
+        }
+        console.log(usernameErrorState)
+    }
+
+    const checkUserName =(username) =>{
+        console.log(usernameErrorState)
+
+    if(usernameError.includes('username must be longer than 3 characters') || usernameError.includes('spaces')){
+        let newword= usernameError;
+        
+        if(newword[newword.length-1] === ','){
+            newword = newword.substring(0,newword.length-1) + '.'
+            setuserNameError(newword)
+
+        }
+
+        if(!username.includes('spaces')){
+            newword.replace(' and', '')
+            setuserNameError(newword)
+        }
+
+     }
+     console.log(usernameErrorState)
+    }
+
+    const checkPasswordWhiteSpaces = (password) =>{
+
+        if(hasWhiteSpace(password)){
+            setPassErrorState(true)
+            if(!passError.includes('spaces')){
+                return
+            }
+            setPassError(prevErrorMessage => prevErrorMessage + " spaces,");
+        }else{
+            if(passError.includes('spaces')){
+                let newword = passError
+                newword.replace(" spaces[, .]","")
+                setPassError(newword)
+            }
+            setPassErrorState(false)
+        }
+    }
+
+    const checkPasswordLength = (password) =>{
+
+        if(password.length <=4 ){
+            setPassErrorState(true)
+            if(!password.includes('password must be longer than 3 characters')){
+                return
+            }
+            setPassError(prevErrorMessage => prevErrorMessage + " and password must be longer than 3 characters.");
+        }else{
+            if(passError.includes('password must be longer than 3 characters')){
+                let newword = usernameError
+                newword.replace(" ?:[and]? password must be longer than 3 characters","")
+                setPassError(newword)
+            }
+            setPassErrorState(false)
+        }
+    }
+
+    const checkPassword =(password) =>{
+
+    if(passError.includes('password must be longer than 3 characters') || passError.includes('spaces')){
+        let newword= passError;
+        
+        if(newword[newword.length-1] === ','){
+            newword = newword.substring(0,newword.length-1) + '.'
+            setPassError(newword)
+        }
+
+        if(!password.includes('spaces')){
+            newword.replace(' and', '')
+            setPassError(newword)
         }
 
     }
+    }
+
 
  const checkEmail = (email) => {
-    var bool = false;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    bool = hasWhiteSpace(email)
-    if(bool === true){
-    //    setErrorPass("there is whitespace in your email")
-        return bool = true;
+ 
+    if(hasWhiteSpace(email)){
+        
     }
 
     if (!emailRegex.test(email)) {
    //     setErrorEmail("Incorrect Email format")
-        return bool = true;
+        return
     }else{
    //     setErrorEmail("")
     }
 
 }
 
- const submitReg = (e) =>{
+ const submitReg =  (e) =>{
     e.preventDefault();
+    checkUserNameWhiteSpaces(username)
+    checkUserNameLength(username)
     checkUserName(username)
+    checkPasswordWhiteSpaces(password)
+    checkPasswordLength(password)
+    checkPassword(password)
  }
 
     
@@ -94,7 +206,7 @@ return(<div>
 
                 <span onClick={changePassword} className="password-icon">{showpassword ? "👁️" : "🔒" }</span>
             </div>
-
+            {passErrorState ? passError : null}
         </Form.Group>
 
         <Form.Group>
