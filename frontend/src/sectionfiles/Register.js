@@ -12,6 +12,8 @@ const Login = () =>{
   const [usernameError, setuserNameError]= useState('username can not have')
   const [passErrorState, setPassErrorState] = useState(false)
   const [passError, setPassError]= useState('password can not have')
+  const [passErrorSpace, setPassErrorSpace] = useState(false)
+  const [passLength, setPassLength]= useState(false)
   const [email,setEmail] = useState('')
 
   const changePassword =() =>{
@@ -32,8 +34,7 @@ const Login = () =>{
 }
 
     const checkUserNameWhiteSpaces = (username) =>{
-        console.log(username)
-        console.log(usernameErrorState)
+        
         if(hasWhiteSpace(username)){
             setUserNameErrorState(true)
             if(!usernameError.includes('spaces')){
@@ -48,11 +49,11 @@ const Login = () =>{
             }
             setUserNameErrorState(false)
         }
-        console.log(usernameErrorState)
+      
     }
 
     const checkUserNameLength = (username) =>{
-        console.log(usernameErrorState)
+        
         if(username.length <=4 ){
             setUserNameErrorState(true)
             if(!username.includes('username must be longer than 3 characters')){
@@ -67,11 +68,11 @@ const Login = () =>{
             }
             setUserNameErrorState(false)
         }
-        console.log(usernameErrorState)
+      
     }
 
     const checkUserName =(username) =>{
-        console.log(usernameErrorState)
+        
 
     if(usernameError.includes('username must be longer than 3 characters') || usernameError.includes('spaces')){
         let newword= usernameError;
@@ -88,50 +89,43 @@ const Login = () =>{
         }
 
      }
-     console.log(usernameErrorState)
+     
     }
 
     const checkPasswordWhiteSpaces = (password) =>{
-
         if(hasWhiteSpace(password)){
-            setPassErrorState(true)
+            setPassErrorSpace(true)
             if(!passError.includes('spaces')){
-                return
+                setPassError(prevErrorMessage => prevErrorMessage + " spaces,");
             }
-            setPassError(prevErrorMessage => prevErrorMessage + " spaces,");
         }else{
-            if(passError.includes('spaces')){
-                let newword = passError
-                newword.replace(" spaces[, .]","")
-                setPassError(newword)
-            }
-            setPassErrorState(false)
+            setPassError(prevErrorMessage => prevErrorMessage.replace('spaces[, .]', ''));
+            setPassErrorSpace(false)
         }
+        
     }
 
     const checkPasswordLength = (password) =>{
-
+        console.log("username",!usernameError.includes('username must be longer than 3 characters'))
+        console.log(!passError.includes('spaces'))
+        console.log(!passError.includes('less than 3 characters'))
         if(password.length <=4 ){
-            setPassErrorState(true)
-            if(!password.includes('password must be longer than 3 characters')){
-                return
+            setPassLength(true)
+            if(!passError.includes('less than 3 characters')){
+                setPassError(prevErrorMessage => prevErrorMessage + " and less than 3 characters.");
             }
-            setPassError(prevErrorMessage => prevErrorMessage + " and password must be longer than 3 characters.");
         }else{
-            if(passError.includes('password must be longer than 3 characters')){
-                let newword = usernameError
-                newword.replace(" ?:[and]? password must be longer than 3 characters","")
-                setPassError(newword)
-            }
-            setPassErrorState(false)
+            setPassLength(false)
+            setPassError(prevErrorMessage => prevErrorMessage.replace(' ?:[and]? less than 3 characters', ''));
         }
+       
     }
 
     const checkPassword =(password) =>{
-
-    if(passError.includes('password must be longer than 3 characters') || passError.includes('spaces')){
+       
+    if(passLength || passErrorSpace){
         let newword= passError;
-        
+        setPassErrorState(true)
         if(newword[newword.length-1] === ','){
             newword = newword.substring(0,newword.length-1) + '.'
             setPassError(newword)
@@ -142,7 +136,10 @@ const Login = () =>{
             setPassError(newword)
         }
 
+    }else{
+        setPassError(false)
     }
+   
     }
 
 
@@ -168,8 +165,8 @@ const Login = () =>{
     checkUserNameWhiteSpaces(username)
     checkUserNameLength(username)
     checkUserName(username)
-    checkPasswordWhiteSpaces(password)
     checkPasswordLength(password)
+    checkPasswordWhiteSpaces(password)
     checkPassword(password)
  }
 
