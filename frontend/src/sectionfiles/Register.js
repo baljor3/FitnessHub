@@ -106,7 +106,7 @@ const Login = () =>{
     }
 
     // TODO: make setPassError update in time
-const prom = (newState) =>{new Promise(resolve => this.setState(newState, resolve));}
+
 
 
 
@@ -115,10 +115,9 @@ const prom = (newState) =>{new Promise(resolve => this.setState(newState, resolv
         if(password.length <=4 ){
             setPassLength(true)
             if(!passError.includes("less than 3 characters")){
-                setPassError(prevErrorMessage => prevErrorMessage + " and less than 3 characters.", () =>{
-                    console.log(passError)
-                });
-        };
+                let newword = passError + " and less than 3 characters."
+                setPassError(newword)
+            }
         }else{
             setPassError(prevErrorMessage => prevErrorMessage.replace(' ?:[and]? less than 3 characters', ''));
             setPassLength(false)
