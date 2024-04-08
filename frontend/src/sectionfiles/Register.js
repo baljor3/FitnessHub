@@ -129,7 +129,7 @@ const Login = () =>{
        
     if(passLength || passErrorSpace){
         let newword= passError;
-        setPassErrorState(true)
+       
         if(newword[newword.length-1] === ','){
             newword = newword.substring(0,newword.length-1) + '.'
             setPassError(newword)
@@ -140,6 +140,7 @@ const Login = () =>{
             setPassError(newword)
         }
 
+        setPassErrorState(true)
     }else{
         setPassErrorState(false)
     }
