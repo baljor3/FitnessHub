@@ -105,18 +105,23 @@ const Login = () =>{
         
     }
 
+    // TODO: make setPassError update in time
+const prom = (newState) =>{new Promise(resolve => this.setState(newState, resolve));}
+
+
+
     const checkPasswordLength = (password) =>{
-        console.log("username",!usernameError.includes('username must be longer than 3 characters'))
-        console.log(!passError.includes('spaces'))
-        console.log(!passError.includes('less than 3 characters'))
+        console.log(passError)
         if(password.length <=4 ){
             setPassLength(true)
-            if(!passError.includes('less than 3 characters')){
-                setPassError(prevErrorMessage => prevErrorMessage + " and less than 3 characters.");
-            }
+            if(!passError.includes("less than 3 characters")){
+                setPassError(prevErrorMessage => prevErrorMessage + " and less than 3 characters.", () =>{
+                    console.log(passError)
+                });
+        };
         }else{
-            setPassLength(false)
             setPassError(prevErrorMessage => prevErrorMessage.replace(' ?:[and]? less than 3 characters', ''));
+            setPassLength(false)
         }
        
     }
@@ -137,7 +142,7 @@ const Login = () =>{
         }
 
     }else{
-        setPassError(false)
+        setPassErrorState(false)
     }
    
     }
@@ -160,7 +165,7 @@ const Login = () =>{
 
 }
 
- const submitReg =  (e) =>{
+ const submitReg =  async (e) =>{
     e.preventDefault();
     checkUserNameWhiteSpaces(username)
     checkUserNameLength(username)
