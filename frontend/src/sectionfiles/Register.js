@@ -12,8 +12,7 @@ const Login = () =>{
   const [usernameError, setuserNameError]= useState('username can not have')
   const [passErrorState, setPassErrorState] = useState(false)
   const [passError, setPassError]= useState('password can not have')
-  const [passErrorSpace, setPassErrorSpace] = useState(false)
-  const [passLength, setPassLength]= useState(false)
+ 
   const [email,setEmail] = useState('')
 
   const changePassword =() =>{
@@ -33,119 +32,96 @@ const Login = () =>{
     return false; // No white space character found
 }
 
-    const checkUserNameWhiteSpaces = (username) =>{
-        
-        if(hasWhiteSpace(username)){
-            setUserNameErrorState(true)
-            if(!usernameError.includes('spaces')){
-                return
-            }
-            setuserNameError(prevErrorMessage => prevErrorMessage + " spaces,");
-        }else{
-            if(usernameError.includes('spaces')){
-                let newword = usernameError
-                newword.replace(" spaces[, .]","")
-                setuserNameError(newword)
-            }
-            setUserNameErrorState(false)
-        }
-      
-    }
-
-    const checkUserNameLength = (username) =>{
-        
-        if(username.length <=4 ){
-            setUserNameErrorState(true)
-            if(!username.includes('username must be longer than 3 characters')){
-                return
-            }
-            setuserNameError(prevErrorMessage => prevErrorMessage + " and username must be longer than 3 characters.");
-        }else{
-            if(usernameError.includes('username must be longer than 3 characters')){
-                let newword = usernameError
-                newword.replace(" ?:[and]? username must be longer than 3 characters","")
-                setuserNameError(newword)
-            }
-            setUserNameErrorState(false)
-        }
-      
-    }
+   
 
     const checkUserName =(username) =>{
         
-
-    if(usernameError.includes('username must be longer than 3 characters') || usernameError.includes('spaces')){
-        let newword= usernameError;
+        let newword = usernameError
         
-        if(newword[newword.length-1] === ','){
-            newword = newword.substring(0,newword.length-1) + '.'
-            setuserNameError(newword)
-
-        }
-
-        if(!username.includes('spaces')){
-            newword.replace(' and', '')
-            setuserNameError(newword)
-        }
-
-     }
-     
-    }
-
-    const checkPasswordWhiteSpaces = (password) =>{
-        if(hasWhiteSpace(password)){
-            setPassErrorSpace(true)
-            if(!passError.includes('spaces')){
-                setPassError(prevErrorMessage => prevErrorMessage + " spaces,");
+        if(hasWhiteSpace(username) || username !== undefined){
+            if(!newword.includes('spaces')){
+                newword += " spaces,"
             }
         }else{
-            setPassError(prevErrorMessage => prevErrorMessage.replace('spaces[, .]', ''));
-            setPassErrorSpace(false)
+            newword =  newword.replace(/spaces[,.]/, '')
         }
+
+        if(username.length <=4 ){
+            if(!newword.includes("less than 3 characters")){
+                newword += " and less than 3 characters,"
+            }
+        }else{
+            newword = newword.replace(" ?:[and]? less than 3 characters", "") 
+        }
+      
         
+    if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
+       
+        newword = newword.substring(0,newword.length-1) + '.'    
+
+        if(!newword.includes('spaces')){
+            newword = newword.replace(/and/, '')
+        }
+
+        let lastCommaIndex = newword.lastIndexOf(',');
+
+        // If a comma is found
+            if (lastCommaIndex !== -1) {
+        // Add "and" after the last comma
+            newword = newword.substring(0, lastCommaIndex + 1) + " and" + newword.substring(lastCommaIndex + 1);
+            }
+
+        usernameError(newword)
+        setUserNameErrorState(true)
+    }else{
+        setUserNameErrorState(false)
     }
+}
+   
 
-    // TODO: make setPassError update in time
+    const checkPassword = async(password) =>{
+        let newword = passError
+        
+        if(hasWhiteSpace(password) || password != undefined){
+            if(!newword.includes('spaces')){
+                newword += " spaces,"
+            }
+        }else{
+            newword =  newword.replace(/spaces[,.]/, '')
+        }
 
-
-
-
-    const checkPasswordLength = (password) =>{
-        console.log(passError)
         if(password.length <=4 ){
-            setPassLength(true)
-            if(!passError.includes("less than 3 characters")){
-                let newword = passError + " and less than 3 characters."
-                setPassError(newword)
+            if(!newword.includes("less than 3 characters")){
+                newword += " and less than 3 characters,"
             }
         }else{
-            setPassError(prevErrorMessage => prevErrorMessage.replace(' ?:[and]? less than 3 characters', ''));
-            setPassLength(false)
+            newword = newword.replace(/ ?(?:and)? less than 3 characters[.,]?/, "")
         }
+      
+        
+    if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
        
-    }
+       
+        newword = newword.substring(0,newword.length-1) + '.'    
 
-    const checkPassword =(password) =>{
-       
-    if(passLength || passErrorSpace){
-        let newword= passError;
-       
-        if(newword[newword.length-1] === ','){
-            newword = newword.substring(0,newword.length-1) + '.'
-            setPassError(newword)
+        if(!newword.includes('spaces')){
+            newword = newword.replace(/and/, '')
         }
 
-        if(!password.includes('spaces')){
-            newword.replace(' and', '')
-            setPassError(newword)
+        let lastCommaIndex = newword.lastIndexOf(',');
+
+        // If a comma is found
+        if (lastCommaIndex !== -1) {
+        // Add "and" after the last comma
+        newword = newword.substring(0, lastCommaIndex + 1) + " and" + newword.substring(lastCommaIndex + 1);
         }
 
+        setPassError(newword)
         setPassErrorState(true)
     }else{
         setPassErrorState(false)
     }
-   
-    }
+}
 
 
  const checkEmail = (email) => {
@@ -167,12 +143,8 @@ const Login = () =>{
 
  const submitReg =  async (e) =>{
     e.preventDefault();
-    checkUserNameWhiteSpaces(username)
-    checkUserNameLength(username)
     checkUserName(username)
-    checkPasswordLength(password)
-    checkPasswordWhiteSpaces(password)
-    checkPassword(password)
+    await checkPassword(password)
  }
 
     
