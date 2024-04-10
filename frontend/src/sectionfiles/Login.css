@@ -12,8 +12,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh; /* Set the height of the container to the full viewport height */
+    height: 85vh; /* Set the height of the container to the full viewport height */
   }
+  .form-size {
+    width: 525px;
+    height: 700px;
+    border: 3px solid #FCE5BD;
+    box-shadow: 10px 10px 10px rgba(0.1, 0.1, 0.1, 0.1);
+}
+
+.error-size {
+    width: 525px;
+    height: 750px;
+    border: 3px solid #FCE5BD;
+    box-shadow: 10px 10px 10px rgba(0.1, 0.1, 0.1, 0.1);
+}
 
 .password-icon {
     position: relative;

@@ -38,7 +38,7 @@ const Login = () =>{
         
         let newword = usernameError
         
-        if(hasWhiteSpace(username) || username !== undefined){
+        if(hasWhiteSpace(username)){
             if(!newword.includes('spaces')){
                 newword += " spaces,"
             }
@@ -63,15 +63,15 @@ const Login = () =>{
             newword = newword.replace(/and/, '')
         }
 
-        let lastCommaIndex = newword.lastIndexOf(',');
-
+        let firstperiodIndex = newword.indexOf('.');
+        
         // If a comma is found
-            if (lastCommaIndex !== -1) {
+        if (firstperiodIndex !== -1 && (newword.length-1) !== firstperiodIndex) {
         // Add "and" after the last comma
-            newword = newword.substring(0, lastCommaIndex + 1) + " and" + newword.substring(lastCommaIndex + 1);
-            }
+        newword = newword.substring(0, firstperiodIndex)+"," + " and" +newword.substring(firstperiodIndex + 1);
+        }
 
-        usernameError(newword)
+        setuserNameError(newword)
         setUserNameErrorState(true)
     }else{
         setUserNameErrorState(false)
@@ -82,7 +82,7 @@ const Login = () =>{
     const checkPassword = async(password) =>{
         let newword = passError
         
-        if(hasWhiteSpace(password) || password != undefined){
+        if(hasWhiteSpace(password) ){
             if(!newword.includes('spaces')){
                 newword += " spaces,"
             }
@@ -91,9 +91,11 @@ const Login = () =>{
         }
 
         if(password.length <=4 ){
-            if(!newword.includes("less than 3 characters")){
+            
+            if(!newword.includes('less than 3 character')){
                 newword += " and less than 3 characters,"
             }
+            console.log(newword)
         }else{
             newword = newword.replace(/ ?(?:and)? less than 3 characters[.,]?/, "")
         }
@@ -101,19 +103,20 @@ const Login = () =>{
         
     if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
        
-       
+       console.log("entering wierd", newword)
+
         newword = newword.substring(0,newword.length-1) + '.'    
 
         if(!newword.includes('spaces')){
             newword = newword.replace(/and/, '')
         }
 
-        let lastCommaIndex = newword.lastIndexOf(',');
-
+        let firstperiodIndex = newword.indexOf('.');
+        
         // If a comma is found
-        if (lastCommaIndex !== -1) {
+        if (firstperiodIndex !== -1 && (newword.length-1) !== firstperiodIndex) {
         // Add "and" after the last comma
-        newword = newword.substring(0, lastCommaIndex + 1) + " and" + newword.substring(lastCommaIndex + 1);
+        newword = newword.substring(0, firstperiodIndex)+"," + " and" +newword.substring(firstperiodIndex + 1);
         }
 
         setPassError(newword)
@@ -156,9 +159,9 @@ return(<div>
       </Col>
     </Row>
     </Container>
-    <Container className='form-container'>
+    <Container className={`form-container`}>
 
-    <Form style= {{width: "525px", height:"700px", border:"3px solid #FCE5BD", boxShadow: "10px 10px 10px rgba(0.1, 0.1, 0.1, 0.1)"}} onSubmit={submitReg} >
+    <Form className={`${usernameErrorState ? 'error-size': 'form-size'}`} onSubmit={submitReg} >
 
       <Form.Label className="d-flex justify-content-center mb-4" style= {{fontSize: "48px"}}> Registration</Form.Label>
 
@@ -166,7 +169,7 @@ return(<div>
 
             <Form.Label style={{fontSize:"28px", marginLeft:"30px", marginBottom:"10px"}}> Username </Form.Label>
             <Form.Control type="text" style={{width:"455px", height:"55px",marginLeft:"30px" }} onChange={(e)=>{setUserName(e.target.value)}}/>
-            {usernameErrorState ? usernameError : null}
+            {usernameErrorState ? <p style={{margin: 0, padding: 0, color:"red", textAlign:"center"}}>{usernameError}</p> : null}
             
 
         </Form.Group>
@@ -180,7 +183,7 @@ return(<div>
 
                 <span onClick={changePassword} className="password-icon">{showpassword ? "👁️" : "🔒" }</span>
             </div>
-            {passErrorState ? passError : null}
+            {passErrorState ? <p style={{margin: 0, padding: 0, color:"red", textAlign:"center"}}>{passError}</p> : null}
         </Form.Group>
 
         <Form.Group>
