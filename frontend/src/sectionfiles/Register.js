@@ -7,11 +7,14 @@ const Login = () =>{
   const [showpassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmpassword,setConfirmPassword] = useState('')
+  const [confirmpasswordError, setConfirmPasswordError] = useState(false)
   const [username, setUserName] = useState('')
   const [usernameErrorState, setUserNameErrorState] = useState(false)
   const [usernameError, setuserNameError]= useState('username can not have')
   const [passErrorState, setPassErrorState] = useState(false)
   const [passError, setPassError]= useState('password can not have')
+
+  
  
   const [email,setEmail] = useState('')
 
@@ -126,8 +129,15 @@ const Login = () =>{
     }
 }
 
-
+const matchPassword = (password, confirmpassword) =>{
+    if(password !== confirmpassword){
+        setConfirmPasswordError(true)       
+    }else{
+        setConfirmPasswordError(false)  
+    }
+}
  const checkEmail = (email) => {
+    
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
  
@@ -147,7 +157,9 @@ const Login = () =>{
  const submitReg =  async (e) =>{
     e.preventDefault();
     checkUserName(username)
-    await checkPassword(password)
+    checkPassword(password)
+    matchPassword(password,confirmpassword)
+
  }
 
     
@@ -197,7 +209,7 @@ return(<div>
 
                 <span onClick={changePassword} className="password-icon">{showpassword ? "👁️" : "🔒" }</span>
             </div>
-
+            {confirmpasswordError ? <p style={{margin: 0, padding: 0, color:"red", textAlign:"center"}}>password is not the same</p>: null}
         </Form.Group>
 
         <Form.Group>
