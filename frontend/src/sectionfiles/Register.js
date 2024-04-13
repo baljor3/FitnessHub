@@ -13,6 +13,8 @@ const Login = () =>{
   const [usernameError, setuserNameError]= useState('username can not have')
   const [passErrorState, setPassErrorState] = useState(false)
   const [passError, setPassError]= useState('password can not have')
+  const [emailError,setEmailError]= useState('Email is invalid')
+  const [emailState,setEmailState] = useState(false)
 
   
  
@@ -98,7 +100,7 @@ const Login = () =>{
             if(!newword.includes('less than 3 character')){
                 newword += " and less than 3 characters,"
             }
-            console.log(newword)
+            
         }else{
             newword = newword.replace(/ ?(?:and)? less than 3 characters[.,]?/, "")
         }
@@ -106,8 +108,7 @@ const Login = () =>{
         
     if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
        
-       console.log("entering wierd", newword)
-
+       
         newword = newword.substring(0,newword.length-1) + '.'    
 
         if(!newword.includes('spaces')){
@@ -139,17 +140,13 @@ const matchPassword = (password, confirmpassword) =>{
  const checkEmail = (email) => {
     
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+    
+    console.log(!emailRegex.test(email))
  
-    if(hasWhiteSpace(email)){
-        
-    }
-
-    if (!emailRegex.test(email)) {
-   //     setErrorEmail("Incorrect Email format")
-        return
+    if(hasWhiteSpace(email) || !emailRegex.test(email)){
+        setEmailState(true)
     }else{
-   //     setErrorEmail("")
+        setEmailState(false)
     }
 
 }
@@ -159,6 +156,7 @@ const matchPassword = (password, confirmpassword) =>{
     checkUserName(username)
     checkPassword(password)
     matchPassword(password,confirmpassword)
+    checkEmail(email)
 
  }
 
@@ -216,7 +214,7 @@ return(<div>
 
             <Form.Label style={{fontSize:"28px", marginLeft:"30px", marginTop:"20px",marginBottom:"10px"}}> Email </Form.Label>
             <Form.Control style={{width:"455px", height:"55px",marginLeft:"30px" }} onChange={(e)=>{setEmail(e.target.value)}}></Form.Control>  
-
+            {emailState ? <p style={{margin: 0, padding: 0, color:"red", textAlign:"center"}}>{emailError}</p>: null}
         </Form.Group>
 
         <div className='d-flex justify-content-center align-items-center' style={{marginTop:"5px"}}>
