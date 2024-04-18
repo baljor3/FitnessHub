@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'graphene-django'
+    'graphene_django',
+    'polls'
 ]
 
 MIDDLEWARE = [
@@ -80,15 +81,15 @@ DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': os.environ.get("DATABASE_NAME"),
+        'NAME': config("DATABASE_NAME"),
 
-        'USER': os.environ.get("USER"),
+        'USER': config("USER"),
 
-        'PASSWORD': os.environ.get("PASS"),
+        'PASSWORD': config("PASS"),
 
-        'HOST': os.environ.get("HOST"),
+        'HOST': config("HOST"),
 
-        'PORT': os.environ.get("PORT"),
+        'PORT': config("PORT"),
     }
 }
 
