@@ -8,7 +8,7 @@ class CustomUser(models.Model):
     email = models.EmailField(unique=True, blank=False, null=False)
     hashed_pass = models.CharField(max_length=64)
     is_premium = models.BooleanField(default=False)
-    we = models.CharField(max_length=255)
+  
 
     def save(self, *args, **kwargs):
         # Encode the password before hashing
