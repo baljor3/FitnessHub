@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'graphene_django',
     'polls'
 ]
-
+GRAPHENE ={
+    "SCHEME":"polls.scheme.schema"
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

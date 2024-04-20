@@ -15,4 +15,4 @@ class Query(graphene.ObjectType):
         all_users = graphene.List(CustomUserType)
         return all_users
     
-scheme = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query)
