@@ -6,10 +6,13 @@ class CustomUserType(DjangoObjectType):
 
     class Meta:
         model = CustomUser
-        field = ("username","email","hashed_pass","is_premium")
+        field = "__all__"
 
 class Query(graphene.ObjectType):
     all_users = graphene.List(CustomUserType)
+
+    def inputCustomUser(root, info):
+        CustomUserType.Objects.put()
 
     def listall(root,info):
         all_users = graphene.List(CustomUserType)
