@@ -2,6 +2,8 @@ import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import './Login.css'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {CREATE_USER} from '../Graphql/Mutations/mutation'
+import { useMutation } from '@apollo/client';
 
 const Login = () =>{
   const [showpassword, setShowPassword] = useState(false)
@@ -15,6 +17,7 @@ const Login = () =>{
   const [passError, setPassError]= useState('password can not have')
   const [emailError,setEmailError]= useState('Email is invalid')
   const [emailState,setEmailState] = useState(false)
+  const [createUser, {data, loading, error}] = useMutation(CREATE_USER)
 
   
  
@@ -51,15 +54,15 @@ const Login = () =>{
             newword =  newword.replace(/spaces[,.]/, '')
         }
 
-        if(username.length <=4 ){
+        if(username.length <4 ){
             if(!newword.includes("less than 3 characters")){
                 newword += " and less than 3 characters,"
             }
         }else{
             newword = newword.replace(" ?:[and]? less than 3 characters", "") 
+            newword = newword.replace("less than 3 characters","")
         }
       
-        
     if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
        
         newword = newword.substring(0,newword.length-1) + '.'    
@@ -157,6 +160,18 @@ const matchPassword = (password, confirmpassword) =>{
     checkPassword(password)
     matchPassword(password,confirmpassword)
     checkEmail(email)
+    if(emailState === false && usernameErrorState === false && passErrorState === false && confirmpasswordError === false){
+       console.log("accepting parameters")
+        createUser({variables:{
+            username:username,
+            password: password,
+            email: email
+        }})
+        console.log(error)
+    }else{
+        console.log("not accepting parameters")
+        return
+    }
 
  }
 

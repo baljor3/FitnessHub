@@ -5,16 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
-import {QueryClient,QueryClientProvider,useQuery} from '@tanstack/react-query'
-const queryClient = new QueryClient()
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://127.0.0.1:8000/graphql',
+  cache: new InMemoryCache(),
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <ApolloProvider client={client}>
     <BrowserRouter>
     <App />
     </BrowserRouter>
-    </QueryClientProvider>
+    </ApolloProvider>
   </React.StrictMode>
 );
 
