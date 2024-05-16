@@ -7,9 +7,10 @@ class CustomUserType(DjangoObjectType):
 
     class Meta:
         model = CustomUser
-        field = "__all__"
+        fields = "__all__"
 
-class customUserMutation(graphene.Mutation):
+class CustomUserMutation(graphene.Mutation):
+    print('here')
     class Arguments:
         username = graphene.String(required = True)
         password = graphene.String(required = True)
@@ -29,11 +30,11 @@ class customUserMutation(graphene.Mutation):
         hashpassword=hashlib.sha256((password + salt).encode()).hexdigest()
         new_user.hashed_pass = hashpassword
         new_user.save()
-        return customUserMutation(customuser = new_user)
+        return CustomUserMutation(customuser = new_user)
 
         
 class Mutation(graphene.ObjectType):
-    create_user = customUserMutation.Field()
+    create_user = CustomUserMutation.Field()
 
 class Query(graphene.ObjectType):
     all_users = graphene.List(CustomUserType)

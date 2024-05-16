@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'polls'
 ]
 GRAPHENE ={
-    "SCHEME":"polls.scheme.schema"
+    "SCHEMA":"polls.schema.schema"
 }
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -58,6 +58,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+"http://localhost:3000",
+"http://127.0.0.1:8000"
+]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+    "http://127.0.0.1:8000"
+    # your React App domain
+]
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
+]
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [

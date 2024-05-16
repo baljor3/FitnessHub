@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {CREATE_USER} from '../Graphql/Mutations/mutation'
 import { useMutation } from '@apollo/client';
 
-const Login = () =>{
+const Register = () =>{
   const [showpassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmpassword,setConfirmPassword] = useState('')
@@ -251,4 +251,4 @@ return(<div>
 
 }
 
-export default Login;
+export default Register;
