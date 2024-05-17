@@ -10,7 +10,7 @@ class CustomUserType(DjangoObjectType):
         fields = "__all__"
 
 class CustomUserMutation(graphene.Mutation):
-    print('here')
+
     class Arguments:
         username = graphene.String(required = True)
         password = graphene.String(required = True)

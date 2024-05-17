@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {CREATE_USER} from '../Graphql/Mutations/mutation'
 import { useMutation } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const Register = () =>{
   const [showpassword, setShowPassword] = useState(false)
@@ -17,6 +18,8 @@ const Register = () =>{
   const [passError, setPassError]= useState('password can not have')
   const [emailError,setEmailError]= useState('Email is invalid')
   const [emailState,setEmailState] = useState(false)
+
+
   const [createUser, {data, loading, error}] = useMutation(CREATE_USER)
 
   
@@ -156,6 +159,7 @@ const matchPassword = (password, confirmpassword) =>{
 
  const submitReg =  async (e) =>{
     e.preventDefault();
+    console.log(createUser)
     checkUserName(username)
     checkPassword(password)
     matchPassword(password,confirmpassword)
