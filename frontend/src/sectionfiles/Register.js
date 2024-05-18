@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {CREATE_USER} from '../Graphql/Mutations/mutation'
 import { useMutation } from '@apollo/client';
-import { gql } from "@apollo/client";
+
 
 const Register = () =>{
   const [showpassword, setShowPassword] = useState(false)
