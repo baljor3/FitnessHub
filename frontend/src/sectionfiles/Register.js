@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {CREATE_USER} from '../Graphql/Mutations/mutation'
 import { useMutation } from '@apollo/client';
+import { ErrorLink, onError } from "@apollo/client/link/error";
+
+// Log any GraphQL errors or network error that occurred
 
 
 const Register = () =>{
@@ -23,7 +26,15 @@ const Register = () =>{
   const [createUser, {data, loading, error}] = useMutation(CREATE_USER)
 
   
- 
+ const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
   const [email,setEmail] = useState('')
 
   const changePassword =() =>{
@@ -165,13 +176,22 @@ const matchPassword = (password, confirmpassword) =>{
     matchPassword(password,confirmpassword)
     checkEmail(email)
     if(emailState === false && usernameErrorState === false && passErrorState === false && confirmpasswordError === false){
-       console.log("accepting parameters")
-        createUser({variables:{
-            username:username,
-            password: password,
-            email: email
-        }})
-        console.log(error)
+        try {
+             createUser({
+              variables: {
+                username: username,
+                password: password,
+                email: email
+              }
+            });    
+            // Handle success, e.g., redirect to login page
+          } catch (error) {
+            console.error('Error creating user:', error.message);
+            
+            // Handle specific error cases, e.g., display error message to the user
+          }
+       
+        
     }else{
         console.log("not accepting parameters")
         return
