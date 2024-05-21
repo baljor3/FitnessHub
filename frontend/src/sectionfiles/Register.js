@@ -6,6 +6,7 @@ import {CREATE_USER} from '../Graphql/Mutations/mutation'
 import { useMutation } from '@apollo/client';
 import { ErrorLink, onError } from "@apollo/client/link/error";
 
+
 // Log any GraphQL errors or network error that occurred
 
 
@@ -21,10 +22,11 @@ const Register = () =>{
   const [passError, setPassError]= useState('password can not have')
   const [emailError,setEmailError]= useState('Email is invalid')
   const [emailState,setEmailState] = useState(false)
+  const [generalError, setGeneralError] = useState('');
+  const [generalErrorState, setGeneralErrorState] = useState(false)
 
-
-  const [createUser, {data, loading, error}] = useMutation(CREATE_USER)
-
+  const [createUser, {data, loading, createError}] = useMutation(CREATE_USER)
+  const navigate = useNavigate();
   
  const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -170,25 +172,32 @@ const matchPassword = (password, confirmpassword) =>{
 
  const submitReg =  async (e) =>{
     e.preventDefault();
-    console.log(createUser)
     checkUserName(username)
     checkPassword(password)
     matchPassword(password,confirmpassword)
     checkEmail(email)
     if(emailState === false && usernameErrorState === false && passErrorState === false && confirmpasswordError === false){
+        console.log('emailError', emailState, 'usernameError ', usernameErrorState, 'password error ',passErrorState, 'confirmed pass error ', confirmpasswordError )
         try {
-             createUser({
+             await createUser({
               variables: {
                 username: username,
                 password: password,
                 email: email
               }
             });    
-            // Handle success, e.g., redirect to login page
-          } catch (error) {
-            console.error('Error creating user:', error.message);
+            setGeneralErrorState(false)
+            navigate("/")
+          } catch (err) {
+            console.error('Error creating user:', err);
+            if (err.message.includes('duplicate key value violates unique constraint "polls_customuser_email_key"')) {
+              setGeneralError('Email already exists. Please use a different email.');
+              setGeneralErrorState(true)
+            } else {
+              setGeneralError('An error occurred. Please try again.');
+              setGeneralErrorState(true)
+            }
             
-            // Handle specific error cases, e.g., display error message to the user
           }
        
         
@@ -261,6 +270,8 @@ return(<div>
             <Button style={{width:"200px"}} type = 'submit'>Register</Button>
             
         </div>
+
+        {generalErrorState ? generalError : null}
 
         <div className='d-flex justify-content-center align-items-center' style={{marginTop:"5px"}}>
 
