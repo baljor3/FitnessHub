@@ -57,125 +57,124 @@ const Register = () =>{
 }
 
    
+const checkUserName = (username) => {
+    return new Promise((resolve, reject) => {
+      let newword = usernameError;
 
-    const checkUserName =(username) =>{
-        
-        let newword = usernameError
-        
-        if(hasWhiteSpace(username)){
-            if(!newword.includes('spaces')){
-                newword += " spaces,"
-            }
-        }else{
-            newword =  newword.replace(/spaces[,.]/, '')
+      if (hasWhiteSpace(username)) {
+        if (!newword.includes('spaces')) {
+          newword += " spaces,";
         }
+      } else {
+        newword = newword.replace(/spaces[,.]/, '');
+      }
 
-        if(username.length <4 ){
-            if(!newword.includes("less than 3 characters")){
-                newword += " and less than 3 characters,"
-            }
-        }else{
-            newword = newword.replace(" ?:[and]? less than 3 characters", "") 
-            newword = newword.replace("less than 3 characters","")
+      if (username.length < 4) {
+        if (!newword.includes("less than 3 characters")) {
+          newword += " and less than 3 characters,";
         }
-      
-    if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
-       
-        newword = newword.substring(0,newword.length-1) + '.'    
+      } else {
+        newword = newword.replace(" ?:[and]? less than 3 characters", "");
+        newword = newword.replace("less than 3 characters", "");
+      }
 
-        if(!newword.includes('spaces')){
-            newword = newword.replace(/and/, '')
-        }
+      if (newword.includes('less than 3 characters') || newword.includes(" spaces")) {
+        newword = newword.substring(0, newword.length - 1) + '.';
 
-        let firstperiodIndex = newword.indexOf('.');
-        
-        // If a comma is found
-        if (firstperiodIndex !== -1 && (newword.length-1) !== firstperiodIndex) {
-        // Add "and" after the last comma
-        newword = newword.substring(0, firstperiodIndex)+"," + " and" +newword.substring(firstperiodIndex + 1);
-        }
-
-        setuserNameError(newword)
-        setUserNameErrorState(true)
-    }else{
-        setUserNameErrorState(false)
-    }
-}
-   
-
-    const checkPassword = async(password) =>{
-        let newword = passError
-        
-        if(hasWhiteSpace(password) ){
-            if(!newword.includes('spaces')){
-                newword += " spaces,"
-            }
-        }else{
-            newword =  newword.replace(/spaces[,.]/, '')
-        }
-
-        if(password.length <=4 ){
-            
-            if(!newword.includes('less than 3 character')){
-                newword += " and less than 3 characters,"
-            }
-            
-        }else{
-            newword = newword.replace(/ ?(?:and)? less than 3 characters[.,]?/, "")
-        }
-      
-        
-    if(newword.includes('less than 3 characters') || newword.includes(" spaces")){
-       
-       
-        newword = newword.substring(0,newword.length-1) + '.'    
-
-        if(!newword.includes('spaces')){
-            newword = newword.replace(/and/, '')
+        if (!newword.includes('spaces')) {
+          newword = newword.replace(/and/, '');
         }
 
         let firstperiodIndex = newword.indexOf('.');
-        
+
         // If a comma is found
-        if (firstperiodIndex !== -1 && (newword.length-1) !== firstperiodIndex) {
-        // Add "and" after the last comma
-        newword = newword.substring(0, firstperiodIndex)+"," + " and" +newword.substring(firstperiodIndex + 1);
+        if (firstperiodIndex !== -1 && (newword.length - 1) !== firstperiodIndex) {
+          // Add "and" after the last comma
+          newword = newword.substring(0, firstperiodIndex) + "," + " and" + newword.substring(firstperiodIndex + 1);
         }
 
-        setPassError(newword)
-        setPassErrorState(true)
-    }else{
-        setPassErrorState(false)
-    }
-}
+        setuserNameError(newword);
+        setUserNameErrorState(true);
+        resolve();
+      } else {
+        setUserNameErrorState(false);
+        resolve();
+      }
+    });
+  }
 
-const matchPassword = (password, confirmpassword) =>{
-    if(password !== confirmpassword){
-        setConfirmPasswordError(true)       
-    }else{
-        setConfirmPasswordError(false)  
-    }
-}
- const checkEmail = (email) => {
-    
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    
-    console.log(!emailRegex.test(email))
- 
-    if(hasWhiteSpace(email) || !emailRegex.test(email)){
-        setEmailState(true)
-    }else{
-        setEmailState(false)
-    }
+  const checkPassword = (password) => {
+    return new Promise((resolve, reject) => {
+      let newword = passError;
 
-}
+      if (hasWhiteSpace(password)) {
+        if (!newword.includes('spaces')) {
+          newword += " spaces,";
+        }
+      } else {
+        newword = newword.replace(/spaces[,.]/, '');
+      }
 
- const submitReg =  async (e) =>{
-    e.preventDefault();
-    checkUserName(username)
-    checkPassword(password)
-    matchPassword(password,confirmpassword)
-    checkEmail(email)
+      if (password.length <= 4) {
+        if (!newword.includes('less than 3 character')) {
+          newword += " and less than 3 characters,";
+        }
+      } else {
+        newword = newword.replace(/ ?(?:and)? less than 3 characters[.,]?/, "");
+      }
+
+      if (newword.includes('less than 3 characters') || newword.includes(" spaces")) {
+        newword = newword.substring(0, newword.length - 1) + '.';
+
+        if (!newword.includes('spaces')) {
+          newword = newword.replace(/and/, '');
+        }
+
+        let firstperiodIndex = newword.indexOf('.');
+
+        // If a comma is found
+        if (firstperiodIndex !== -1 && (newword.length - 1) !== firstperiodIndex) {
+          // Add "and" after the last comma
+          newword = newword.substring(0, firstperiodIndex) + "," + " and" + newword.substring(firstperiodIndex + 1);
+        }
+
+        setPassError(newword);
+        setPassErrorState(true);
+        resolve();
+      } else {
+        setPassErrorState(false);
+        resolve();
+      }
+    });
+  }
+
+  const matchPassword = (password, confirmpassword) => {
+    return new Promise((resolve, reject) => {
+      if (password !== confirmpassword) {
+        setConfirmPasswordError(true);
+        resolve();
+      } else {
+        setConfirmPasswordError(false);
+        resolve();
+      }
+    });
+  }
+
+  const checkEmail = (email) => {
+    return new Promise((resolve, reject) => {
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+      if (hasWhiteSpace(email) || !emailRegex.test(email)) {
+        setEmailState(true);
+        resolve();
+      } else {
+        setEmailState(false);
+        resolve();
+      }
+    });
+  }
+
+const Reg = async() =>{
     if(emailState === false && usernameErrorState === false && passErrorState === false && confirmpasswordError === false){
         console.log('emailError', emailState, 'usernameError ', usernameErrorState, 'password error ',passErrorState, 'confirmed pass error ', confirmpasswordError )
         try {
@@ -186,7 +185,6 @@ const matchPassword = (password, confirmpassword) =>{
                 email: email
               }
             });    
-            setGeneralErrorState(false)
             navigate("/")
           } catch (err) {
             console.error('Error creating user:', err);
@@ -205,7 +203,16 @@ const matchPassword = (password, confirmpassword) =>{
         console.log("not accepting parameters")
         return
     }
+}
 
+ const submitReg = async (e) =>{
+    e.preventDefault();
+    await checkUserName(username)
+    await checkPassword(password)
+    await matchPassword(password, confirmpassword)
+    await checkEmail(email)
+    Reg()
+    
  }
 
     
